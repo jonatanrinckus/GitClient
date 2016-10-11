@@ -4,9 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitClient"
+        xmlns:viewModels="clr-namespace:GitClient.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        x:Name="MainWindowPage"
+        Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
+            <StatusBarItem>
+                <Label Content="{Binding Path=Status}" 
+                       Foreground="White" 
+                       Width="127" 
+                       Padding="5,0"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            
+        </Grid>
+    </DockPanel>
 </Window>
