@@ -1,6 +1,8 @@
-﻿using Octokit;
+﻿using GitClient.Models;
+using Octokit;
 using System;
 using System.Threading.Tasks;
+using User = Octokit.User;
 
 namespace GitClient.Adapters
 {
@@ -19,11 +21,11 @@ namespace GitClient.Adapters
 			Client = client;
 		}
 
-		public async Task<bool> Login(string login, string password)
+		public async Task<bool> Login(Login login)
 		{
 			try
 			{
-				var basicAuth = new Credentials(login, password);
+				var basicAuth = new Credentials(login.Username, login.Password);
 				Client.Credentials = basicAuth;
 				User = await Client.User.Current();
 

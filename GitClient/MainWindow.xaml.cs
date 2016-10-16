@@ -42,31 +42,6 @@ namespace GitClient
             CommandManager.InvalidateRequerySuggested();
         }
 
-	    private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
-	    {
-			IGitAdapter client = new GitHubAdapter();
-		    if (await client.Login(LoginTextBox.Text, PasswordBox.Password))
-		    {
-			    var user = client.GetUserInfo();
-				Context.Status = $"Logged as {user.Name}";
-			}
-		    else
-		    {
-			    if (App.CurrentApp.HasError)
-			    {
-				    while (App.CurrentApp.HasError)
-				    {
-					    var error = App.CurrentApp.Errors.FirstOrDefault();
-					    Context.Status = error;
-					    App.CurrentApp.Errors.Remove(error);
-					    await Task.Delay(1000);
-				    }
-			    }
-			    else
-			    {
-					Context.Status = "Login error";
-				}
-		    }
-	    }
+	   
     }
 }
