@@ -8,20 +8,35 @@
         mc:Ignorable="d"
         x:Name="MainWindowPage"
         Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Window.DataContext>
-        <viewModels:MainViewModel/>
-    </Window.DataContext>
-    <DockPanel>
-        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
-            <StatusBarItem>
-                <Label Content="{Binding Path=Status}" 
+	<Window.DataContext>
+		<viewModels:MainViewModel/>
+	</Window.DataContext>
+	<DockPanel>
+		<StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
+			<StatusBarItem HorizontalContentAlignment="Stretch">
+				<Grid MinHeight="4">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="7*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label Grid.Column="0" Content="{Binding Path=Status}" 
+                       Foreground="White" 
+                       Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Background="{x:Null}"/>
+					<Label HorizontalAlignment="Right" Grid.Column="2" Content="{Binding Path=Clock}" 
                        Foreground="White" 
                        Width="127" 
-                       Padding="5,0"/>
-            </StatusBarItem>
-        </StatusBar>
-        <Grid>
-            
-        </Grid>
-    </DockPanel>
+                       Padding="5,0" HorizontalContentAlignment="Right"/>
+				</Grid>
+			</StatusBarItem>
+		</StatusBar>
+		<Grid Background="#FFDEDEDE" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,42" Width="309">
+			<Label Content="Login:&#xD;&#xA;" Margin="2,52,0,130" Height="30" Width="100" FontSize="20" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+			<Label Content="Password:" Margin="2,86,0,96" Width="100" Height="30" FontSize="20" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+			<PasswordBox x:Name="PasswordBox" Margin="120,86,0,96" Width="178" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+			<TextBox x:Name="LoginTextBox" Height="30" Margin="120,52,0,130" TextWrapping="Wrap" Width="178" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+			<Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="125,136,0,0" VerticalAlignment="Top" Width="75"/>
+			<Button x:Name="LoginButton" Content="Log in" HorizontalAlignment="Left" Margin="213,136,0,0" VerticalAlignment="Top" Width="75" Click="OnLoginButtonClick"/>
+		</Grid>
+	</DockPanel>
 </Window>
