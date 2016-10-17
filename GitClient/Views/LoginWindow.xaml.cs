@@ -16,11 +16,9 @@ namespace GitClient.Views
 		{
 			InitializeComponent();
 
-			ProviderComboBox.ItemsSource = new List<string>()
-			{
-				"GitHub"
-			};
+			ProviderComboBox.ItemsSource = App.AppManager.Providers;
 
+			LoginsListView.ItemsSource = App.AppManager.Logins;
 		}
 
 		private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
