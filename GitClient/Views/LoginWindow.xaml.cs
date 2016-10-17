@@ -1,9 +1,10 @@
 ﻿using GitClient.Adapters;
 using GitClient.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace GitClient.Views
 {
@@ -23,15 +24,24 @@ namespace GitClient.Views
 
 		private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
 		{
+			var login = DataContext as Login;
+
+			if (login == null)
+				return;
+
+			login.Password = PasswordBox.Password;
+
+			await Login(login);
+		}
+
+		private async Task Login(Login login)
+		{
 			try
 			{
 				IGitAdapter client = new GitHubAdapter();
-				var login = DataContext as Login;
 
-				if(login == null)
+				if (login == null)
 					throw new NullReferenceException("Login is null.");
-
-				login.Password = PasswordBox.Password;
 
 				if (await client.Login(login))
 				{
@@ -64,12 +74,46 @@ namespace GitClient.Views
 			{
 				MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
 			}
-			
 		}
+
 
 		private void OnCancelButtonClick(object sender, RoutedEventArgs e)
 		{
 			Close();
+		}
+		
+		
+		private void OnLoginsListViewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			var item = LoginsListView.SelectedItem as Login;
+
+			if (item == null)
+				return;
+
+			var result = MessageBox.Show($"Would you like to delete the login for {item.Provider} " +
+			                $"with the username {item.Username}?", 
+							$"Delete login for {item.Provider}", 
+							MessageBoxButton.YesNo);
+
+			if (result != MessageBoxResult.Yes)
+				return;
+			
+			App.AppManager.RemoveLogin(item);
+
+			LoginsListView.ItemsSource = App.AppManager.Logins;
+
+			LoginsListView.Items.Refresh();
+		}
+
+		private async void OnLoginsListViewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			var item = LoginsListView.SelectedItem as Login;
+
+			if (item == null)
+				return;
+
+			await Login(item);
+
 		}
 	}
 }
