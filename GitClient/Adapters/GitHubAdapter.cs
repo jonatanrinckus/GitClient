@@ -27,6 +27,7 @@ namespace GitClient.Adapters
 			{
 				var basicAuth = new Credentials(login.Username, login.Password);
 				Client.Credentials = basicAuth;
+                
 				User = await Client.User.Current();
 
 				return User != null;
