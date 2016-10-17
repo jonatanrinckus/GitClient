@@ -28,6 +28,7 @@ namespace GitClient
             dispatcherTimer.Start();
 	
 			Context.Status = "Welcome";
+            
 
 		}
 

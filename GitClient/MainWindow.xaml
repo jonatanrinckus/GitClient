@@ -8,28 +8,38 @@
         mc:Ignorable="d"
         x:Name="MainWindowPage"
         Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-	<Window.DataContext>
-		<viewModels:MainViewModel/>
-	</Window.DataContext>
-	<DockPanel>
-		<StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
-			<StatusBarItem HorizontalContentAlignment="Stretch">
-				<Grid MinHeight="4">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="7*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<Label Grid.Column="0" Content="{Binding Path=Status}" 
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <DockPanel.Background>
+            <ImageBrush ImageSource="Resources/Logo.png" Stretch="Uniform"/>
+        </DockPanel.Background>
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
+            <StatusBarItem HorizontalContentAlignment="Stretch">
+                <Grid MinHeight="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding Path=Status}" 
                        Foreground="White" 
                        Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Background="{x:Null}"/>
-					<Label HorizontalAlignment="Right" Grid.Column="2" Content="{Binding Path=Clock}" 
+                    <Label HorizontalAlignment="Right" Grid.Column="2" Content="{Binding Path=Clock}" 
                        Foreground="White" 
                        Width="127" 
                        Padding="5,0" HorizontalContentAlignment="Right"/>
-				</Grid>
-			</StatusBarItem>
-		</StatusBar>
-		<Grid Background="#FFDEDEDE" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,42" Width="309"/>
-	</DockPanel>
+                </Grid>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid Background="#FFDEDEDE" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,42" Width="309"/>
+        <Menu x:Name="menu" HorizontalAlignment="Left" Background="#FFD6DBE9" Margin="0" DockPanel.Dock="Top" VerticalAlignment="Top" Height="22">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Issues"/>
+                <Separator/>
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+        </Menu>
+    </DockPanel>
 </Window>
