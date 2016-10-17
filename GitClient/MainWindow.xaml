@@ -40,6 +40,8 @@
                 <Separator/>
                 <MenuItem Header="_Exit" />
             </MenuItem>
+
+            <MenuItem Header="_Account"/>
         </Menu>
     </DockPanel>
 </Window>
