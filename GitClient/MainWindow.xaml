@@ -13,7 +13,7 @@
     </Window.DataContext>
     <DockPanel>
         <DockPanel.Background>
-            <ImageBrush ImageSource="Resources/Logo.png" Stretch="Uniform"/>
+            <ImageBrush ImageSource="Resources/Logo.png" />
         </DockPanel.Background>
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
             <StatusBarItem HorizontalContentAlignment="Stretch">
@@ -33,15 +33,15 @@
                 </Grid>
             </StatusBarItem>
         </StatusBar>
-        <Grid Background="#FFDEDEDE" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,42" Width="309"/>
-        <Menu x:Name="menu" HorizontalAlignment="Left" Background="#FFD6DBE9" Margin="0" DockPanel.Dock="Top" VerticalAlignment="Top" Height="22">
+        <Menu x:Name="menu" Background="#FFD6DBE9" Margin="0" DockPanel.Dock="Top" VerticalAlignment="Top" Height="22">
             <MenuItem Header="_File">
-                <MenuItem Header="_Issues"/>
+                <MenuItem Header="_Issues" Click="OnIssueMenuClick"/>
                 <Separator/>
                 <MenuItem Header="_Exit" />
             </MenuItem>
 
             <MenuItem Header="_Account"/>
         </Menu>
+        <Frame x:Name="MainFrame" Content=""/>
     </DockPanel>
 </Window>

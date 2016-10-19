@@ -1,5 +1,6 @@
 ﻿using GitClient.Adapters;
 using GitClient.ViewModels;
+using GitClient.Views;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,8 @@ namespace GitClient
             CommandManager.InvalidateRequerySuggested();
         }
 
-	   
+        private void OnIssueMenuClick(object sender, RoutedEventArgs e){
+            MainFrame.Navigate(new IssuePage());
+        }
     }
 }
