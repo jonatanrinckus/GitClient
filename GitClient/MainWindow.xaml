@@ -13,7 +13,16 @@
     </Window.DataContext>
     <DockPanel>
         <DockPanel.Background>
-            <ImageBrush ImageSource="Resources/Logo.png" />
+            <ImageBrush ImageSource="Resources/Logo.png" Opacity="0.79" Stretch="Uniform" >
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="0.5" ScaleY="0.5"/>
+                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                        <RotateTransform CenterY="0.5" CenterX="0.5" Angle="-16.699"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
         </DockPanel.Background>
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" Background="#FF007ACC" Height="23">
             <StatusBarItem HorizontalContentAlignment="Stretch">
@@ -42,6 +51,10 @@
 
             <MenuItem Header="_Account"/>
         </Menu>
-        <Frame x:Name="MainFrame" Content=""/>
+        <Frame x:Name="MainFrame" Content="">
+            <Frame.Background>
+                <ImageBrush/>
+            </Frame.Background>
+        </Frame>
     </DockPanel>
 </Window>
