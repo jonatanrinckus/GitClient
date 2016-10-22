@@ -1,4 +1,4 @@
-﻿using GitClient.Adapters;
+﻿using GitClient.Factories;
 using GitClient.Models;
 using System;
 using System.Linq;
@@ -13,11 +13,12 @@ namespace GitClient.Views
 	/// </summary>
 	public partial class LoginWindow : Window
 	{
+
 		public LoginWindow()
 		{
 			InitializeComponent();
 
-			ProviderComboBox.ItemsSource = App.AppManager.Providers;
+			ProviderComboBox.ItemsSource = Enum.GetValues(typeof(Provider));
 
 			LoginsListView.ItemsSource = App.AppManager.Logins;
 		}
@@ -38,12 +39,14 @@ namespace GitClient.Views
 		{
 			try
 			{
-				IGitAdapter client = new GitHubAdapter();
+				var adapter = LoginFactory.CreateInstance(login);
+
+				App.AppManager.Composite.InUse = adapter;
 
 				if (login == null)
 					throw new NullReferenceException("Login is null.");
 
-				if (await client.Login(login))
+				if (await adapter.Login())
 				{
 
 					if (!App.AppManager.Contains(login))
@@ -81,8 +84,8 @@ namespace GitClient.Views
 		{
 			Close();
 		}
-		
-		
+
+
 		private void OnLoginsListViewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			var item = LoginsListView.SelectedItem as Login;
@@ -91,13 +94,13 @@ namespace GitClient.Views
 				return;
 
 			var result = MessageBox.Show($"Would you like to delete the login for {item.Provider} " +
-			                $"with the username {item.Username}?", 
-							$"Delete login for {item.Provider}", 
+							$"with the username {item.Username}?",
+							$"Delete login for {item.Provider}",
 							MessageBoxButton.YesNo);
 
 			if (result != MessageBoxResult.Yes)
 				return;
-			
+
 			App.AppManager.RemoveLogin(item);
 
 			LoginsListView.ItemsSource = App.AppManager.Logins;

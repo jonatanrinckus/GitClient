@@ -1,4 +1,6 @@
-﻿using GitClient.Helpers;
+﻿using GitClient.Composites;
+using GitClient.Factories;
+using GitClient.Helpers;
 using GitClient.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -11,16 +13,13 @@ namespace GitClient
 
 		public AppManager()
 		{
-			Providers = new List<string>()
-			{
-				"GitHub", "GitLab"
-			};
-
+			Composite = new GitComposite();
 			LoadLogins();
+			LoadAdapters();
 		}
 
+		public GitComposite Composite { get; }
 		public List<Login> Logins { get; private set; }
-		public List<string> Providers { get; set; }
 		private void LoadLogins()
 		{
 			var logins = Properties.Settings.Default.Logins;
@@ -64,6 +63,12 @@ namespace GitClient
 			Properties.Settings.Default.Logins = JsonConvert.SerializeObject(logins);
 			Properties.Settings.Default.Save();
 		}
-
+		private void LoadAdapters()
+		{
+			foreach (var login in Logins)
+			{
+				Composite.Add(LoginFactory.CreateInstance(login));
+			}
+		}
 	}
 }

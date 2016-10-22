@@ -67,8 +67,13 @@
     <Compile Include="Adapters\GitHubAdapter.cs" />
     <Compile Include="Adapters\IGitAdapter.cs" />
     <Compile Include="AppManager.cs" />
+    <Compile Include="Composites\GitComposite.cs" />
+    <Compile Include="Factories\LoginFactory.cs" />
     <Compile Include="Helpers\PasswordEncoder.cs" />
+    <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Provider.cs" />
+    <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
