@@ -11,7 +11,7 @@ namespace GitClient
 	public partial class App : Application
 	{
 		public static App CurrentApp;
-		public static AppManager AppManager;
+		public static AppManager AppManager { get; private set; }
 		public List<string> Errors { get; }
 		public bool HasError => Errors.Any();
 

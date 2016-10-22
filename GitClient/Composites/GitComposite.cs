@@ -8,26 +8,20 @@ namespace GitClient.Composites
 {
 	public class GitComposite : IGitAdapter
 	{
-		private IGitAdapter _inUse;
 		public List<IGitAdapter> GitAdapters { get; }
 
-		public IGitAdapter InUse
-		{
-			get { return _inUse; }
-			set
-			{
-				if (!GitAdapters.Contains(value))
-					GitAdapters.Add(value);
-
-				_inUse = value;
-			}
-		}
+		public IGitAdapter InUse { get; set; }
 
 		public GitComposite()
 		{
 			GitAdapters = new List<IGitAdapter>();
 		}
 
+
+		public IGitAdapter GetAdapter(Login login)
+		{
+			return GitAdapters.FirstOrDefault(a => a.GetLoginInfo() == login);
+		}
 
 		public bool Add(IGitAdapter adapter)
 		{
@@ -66,6 +60,17 @@ namespace GitClient.Composites
 			return true;
 		}
 
+		public async Task<IEnumerable<User>> GetUsers()
+		{
+			var list = new List<User>();
+			foreach (var adapter in GitAdapters)
+			{
+				list.Add(await adapter.GetUserInfo());
+			}
+
+			return list;
+		}
+
 		public async Task<bool> Login()
 		{
 			if (!GitAdapters.Any())
@@ -81,9 +86,9 @@ namespace GitClient.Composites
 			return true;
 		}
 
-		public User GetUserInfo()
+		public async Task<User> GetUserInfo()
 		{
-			return InUse.GetUserInfo();
+			return await InUse.GetUserInfo();
 		}
 
 		public Login GetLoginInfo()

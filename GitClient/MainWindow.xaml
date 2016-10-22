@@ -42,16 +42,16 @@
                 </Grid>
             </StatusBarItem>
         </StatusBar>
-        <Menu x:Name="menu" Background="#FFD6DBE9" Margin="0" DockPanel.Dock="Top" VerticalAlignment="Top" Height="22">
+        <Menu Background="#FFD6DBE9" Margin="0" DockPanel.Dock="Top" VerticalAlignment="Top" Height="22">
             <MenuItem Header="_File">
                 <MenuItem Header="_Issues" Click="OnIssueMenuClick"/>
                 <Separator/>
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Exit" Click="OnExitClick"/>
             </MenuItem>
 
             <MenuItem Header="_Account"/>
         </Menu>
-        <Frame x:Name="MainFrame" Content="">
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden">
             <Frame.Background>
                 <ImageBrush/>
             </Frame.Background>

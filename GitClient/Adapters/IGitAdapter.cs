@@ -7,7 +7,7 @@ namespace GitClient.Adapters
 	public interface IGitAdapter
 	{
 		Task<bool> Login();
-		User GetUserInfo();
+		Task<User> GetUserInfo();
 		Login GetLoginInfo();
 		Task LoadIssues();
 		IEnumerable<Repository> GetRepositories();

@@ -25,37 +25,15 @@ namespace GitClient
 			dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 			dispatcherTimer.Start();
 
-			Load();
-		}
+			var userInfo = App.AppManager.Composite.InUse.GetUserInfo().Result;
 
-		private async void Load()
-		{
-			var inUseAdapter = App.AppManager.Composite.InUse;
-			Context.Status = $"Loading repositorios...";
-			await inUseAdapter.LoadRepositories().ContinueWith(t =>
-			{
-				if (t.IsCompleted)
-				{
-					Context.Status = $"Loading issues...";
-					inUseAdapter.LoadIssues().ContinueWith(t2 =>
-					{
-						if (t2.IsCompleted)
-							Context.Status = $"Welcome {inUseAdapter.GetUserInfo().Name}, " +
-											 $"you are logged in {inUseAdapter.GetLoginInfo().Provider} " +
-											 $"as {inUseAdapter.GetLoginInfo().Username}";
-						else
-							Context.Status = $"Error to load issues";
-					});
-				}
-				else
-					Context.Status = $"Error to load repositories";
-
-			});
-
-
-
+			Context.Status = $"Welcome {userInfo.Name}, " +
+											 $"you are logged in {userInfo.Provider} " +
+											 $"as {userInfo.Username}";
 
 		}
+
+
 
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
@@ -66,9 +44,16 @@ namespace GitClient
 			CommandManager.InvalidateRequerySuggested();
 		}
 
-		private void OnIssueMenuClick(object sender, RoutedEventArgs e)
+		private async void OnIssueMenuClick(object sender, RoutedEventArgs e)
 		{
-			MainFrame.Navigate(new IssuePage());
+			await App.AppManager.Composite.Login();
+
+			MainFrame.Navigate(new IssuePage(Context));
+		}
+
+		private void OnExitClick(object sender, RoutedEventArgs e)
+		{
+			App.CurrentApp.Shutdown();
 		}
 	}
 }

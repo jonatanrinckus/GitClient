@@ -50,14 +50,23 @@ namespace GitClient.Adapters
 			}
 		}
 
-		public Models.User GetUserInfo()
+		public async Task<Models.User> GetUserInfo()
 		{
-			return new Models.User()
+			if (User == null)
 			{
-				Username = User.Login,
-				Email = User.Email,
-				Name = User.Name
-			};
+				if (!await Login())
+					return null;
+			}
+
+			if (User != null)
+
+				return new Models.User()
+				{
+					Username = User.Login,
+					Email = User.Email,
+					Name = User.Name
+				};
+			return null;
 		}
 
 		public Login GetLoginInfo()
