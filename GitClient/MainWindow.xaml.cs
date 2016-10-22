@@ -11,7 +11,7 @@ namespace GitClient
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private MainViewModel Context { get; }
+		private static MainViewModel Context { get; set; }
 
 		public MainWindow()
 		{
@@ -25,15 +25,18 @@ namespace GitClient
 			dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 			dispatcherTimer.Start();
 
-			var userInfo = App.AppManager.Composite.InUse.GetUserInfo().Result;
+			SetStatus();
 
-			Context.Status = $"Welcome {userInfo.Name}, " +
-											 $"you are logged in {userInfo.Provider} " +
-											 $"as {userInfo.Username}";
 
 		}
 
-
+		public static void SetStatus()
+		{
+			var userInfo = App.AppManager.Composite.InUse.GetUserInfo().Result;
+			Context.Status = $"Welcome {userInfo.Name}, " +
+											 $"you are logged in {userInfo.Provider} " +
+											 $"as {userInfo.Username}";
+		}
 
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{

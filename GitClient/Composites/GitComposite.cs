@@ -28,7 +28,11 @@ namespace GitClient.Composites
 			if (adapter == null)
 				return false;
 
-			if (GitAdapters.Contains(adapter))
+			if (
+				GitAdapters.Any(
+					g =>
+						g.GetLoginInfo().Username == adapter.GetLoginInfo().Username &&
+						g.GetLoginInfo().Provider == adapter.GetLoginInfo().Provider))
 				return true;
 
 			GitAdapters.Add(adapter);

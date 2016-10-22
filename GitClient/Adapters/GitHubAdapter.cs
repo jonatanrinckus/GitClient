@@ -102,16 +102,20 @@ namespace GitClient.Adapters
 
 		public async Task LoadRepositories()
 		{
+			Repositories.Clear();
+
 			var result = await Client.Repository.GetAllForCurrent();
 
 			foreach (var repository in result)
 			{
+
 				Repositories.Add(new Models.Repository()
 				{
 					Id = repository.Id,
 					FullName = repository.FullName,
 					Name = repository.Name,
-					HasIssues = repository.HasIssues
+					HasIssues = repository.HasIssues,
+					Language = repository.Language
 				});
 			}
 		}

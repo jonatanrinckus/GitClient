@@ -4,20 +4,22 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModels="clr-namespace:GitClient.ViewModels"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
       x:Class="GitClient.Views.IssuePage"
       mc:Ignorable="d" 
       d:DesignHeight="766" d:DesignWidth="1310"
       Title="IssuePage" Width="Auto" Height="Auto" Background="White">
-	<Page.DataContext>
-		<viewModels:IssueViewModel/>
-	</Page.DataContext>
-    <DockPanel LastChildFill="False" Margin="0">
-        <DockPanel Background="#FFECE5E5" Width="200" ScrollViewer.CanContentScroll="True" MinHeight="2">
+	<Grid  Margin="0">
+		<DockPanel Background="#FFECE5E5" Width="200" ScrollViewer.CanContentScroll="True" MinHeight="2" HorizontalAlignment="Left">
 			<ComboBox x:Name="AccountsComboBox" 
 					  Height="51" 
-					  ItemsSource="{Binding Users}"
 					  VerticalAlignment="Top" 
-					  Margin="30,50,30,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Top">
+					  Margin="30,50,30,0" 
+					  IsSynchronizedWithCurrentItem="True"
+					  SelectionChanged="OnSelectionAccountsComboBoxChanged"
+					  HorizontalContentAlignment="Center" 
+					  VerticalContentAlignment="Center" 
+					  DockPanel.Dock="Top">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel HorizontalAlignment="Center" 
@@ -27,33 +29,37 @@
 						</StackPanel>
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
-				</ComboBox>
-            <ListBox x:Name="RepositoriesListView" Margin="20,30" VerticalContentAlignment="Stretch" Padding="0" HorizontalContentAlignment="Stretch" Panel.ZIndex="2" DockPanel.Dock="Bottom">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <Label FontWeight="Bold" FontSize="26.667"></Label>
-                            <Label FontStyle="Normal" FontSize="16"></Label>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </DockPanel>
-        <Frame x:Name="frame" DockPanel.Dock="Top">
-            <Frame.Content>
-                <ListView x:Name="listView" Height="750" VerticalAlignment="Top" Width="100">
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <Label FontSize="26.667" FontWeight="Bold"></Label>
-                                <Label FontSize="16"></Label>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    
-                </ListView>
-            </Frame.Content>
-        </Frame>
-    </DockPanel>
+			</ComboBox>
+			<ListBox x:Name="RepositoriesListView" 
+					 Margin="20,30" 
+					 VerticalContentAlignment="Stretch" 
+					 Padding="0" 
+					 MouseLeftButtonUp="OnRepositoriesListViewMouseLeftButtonUp"
+					 IsSynchronizedWithCurrentItem="True"
+					 HorizontalContentAlignment="Stretch" 
+					 DockPanel.Dock="Bottom">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<Label Content="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+							<Label Content="{Binding Language}" FontSize="10"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</DockPanel>
+		<Frame Margin="200,0,0,0" Background="#FFF1F1F1">
+			<Frame.Content>
+				<ListView x:Name="IssuesListView" Margin="50">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<Label Content="{Binding Title}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Frame.Content>
+		</Frame>
+	</Grid>
 </Page>

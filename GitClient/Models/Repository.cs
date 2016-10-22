@@ -13,5 +13,6 @@ namespace GitClient.Models
 		public string FullName { get; set; }
 		public bool HasIssues { get; set; }
 		public List<Issue> Issues { get; set; }
+		public string Language { get; set; }
 	}
 }
