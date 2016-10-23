@@ -4,18 +4,34 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModels="clr-namespace:GitClient.ViewModels"
-      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:converters="clr-namespace:GitClient.Converters"
+      x:Name="Page"
       x:Class="GitClient.Views.IssuePage"
       mc:Ignorable="d" 
       d:DesignHeight="766" d:DesignWidth="1310"
       Title="IssuePage" Width="Auto" Height="Auto" Background="White">
+	<Page.Resources>
+		<ResourceDictionary>
+			<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+		</ResourceDictionary>
+	</Page.Resources>
+	<Page.DataContext>
+		<viewModels:IssueViewModel/>
+	</Page.DataContext>
 	<Grid  Margin="0">
-		<DockPanel Background="#FFECE5E5" Width="200" ScrollViewer.CanContentScroll="True" MinHeight="2" HorizontalAlignment="Left">
+		<DockPanel Background="#FFECE5E5" 
+				   Width="200" 
+				   IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+				   ScrollViewer.CanContentScroll="True" 
+				   MinHeight="2" 
+				   HorizontalAlignment="Left">
 			<ComboBox x:Name="AccountsComboBox" 
 					  Height="51" 
 					  VerticalAlignment="Top" 
 					  Margin="30,50,30,0" 
+					  ItemsSource="{Binding Users}"
 					  IsSynchronizedWithCurrentItem="True"
+					  IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
 					  SelectionChanged="OnSelectionAccountsComboBoxChanged"
 					  HorizontalContentAlignment="Center" 
 					  VerticalContentAlignment="Center" 
@@ -34,7 +50,8 @@
 					 Margin="20,30" 
 					 VerticalContentAlignment="Stretch" 
 					 Padding="0" 
-					 MouseLeftButtonUp="OnRepositoriesListViewMouseLeftButtonUp"
+					 IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+					 ItemsSource="{Binding Repositories}"
 					 IsSynchronizedWithCurrentItem="True"
 					 HorizontalContentAlignment="Stretch" 
 					 DockPanel.Dock="Bottom">
@@ -50,7 +67,9 @@
 		</DockPanel>
 		<Frame Margin="200,0,0,0" Background="#FFF1F1F1">
 			<Frame.Content>
-				<ListView x:Name="IssuesListView" Margin="50">
+				<ListView x:Name="IssuesListView"
+						  ItemsSource="{Binding Source={x:Reference RepositoriesListView}, Path=SelectedItem.Issues}"
+						  Margin="50">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>

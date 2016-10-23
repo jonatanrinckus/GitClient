@@ -68,6 +68,7 @@
     <Compile Include="Adapters\IGitAdapter.cs" />
     <Compile Include="AppManager.cs" />
     <Compile Include="Composites\GitComposite.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Factories\LoginFactory.cs" />
     <Compile Include="Helpers\PasswordEncoder.cs" />
     <Compile Include="Models\Issue.cs" />

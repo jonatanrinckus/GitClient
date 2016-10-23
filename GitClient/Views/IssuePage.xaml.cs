@@ -1,10 +1,8 @@
 ﻿using GitClient.Models;
 using GitClient.ViewModels;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace GitClient.Views
 {
@@ -15,10 +13,7 @@ namespace GitClient.Views
 	{
 		private MainViewModel MainContext { get; }
 		private IssueViewModel Context { get; }
-		private ObservableCollection<User> Users = new ObservableCollection<User>();
-		private ObservableCollection<Repository> Repositories = new ObservableCollection<Repository>();
-		private ObservableCollection<Issue> Issues = new ObservableCollection<Issue>();
-		private bool IsLoading;
+		private User _lastSelected;
 
 
 		public IssuePage(MainViewModel mainMainContext)
@@ -26,19 +21,15 @@ namespace GitClient.Views
 			MainContext = mainMainContext;
 			InitializeComponent();
 			Context = (IssueViewModel)DataContext;
-			AccountsComboBox.ItemsSource = Users;
-			RepositoriesListView.ItemsSource = Repositories;
-			IssuesListView.ItemsSource = Issues;
-
 			Load();
 		}
 
 		private async void Load()
 		{
-			if (IsLoading)
+			if (Context.IsLoading)
 				return;
 
-			IsLoading = true;
+			Context.IsLoading = true;
 			var inUseAdapter = App.AppManager.Composite.InUse;
 			MainContext.Status = $"Loading repositorios...";
 			await inUseAdapter.LoadRepositories().ContinueWith(t =>
@@ -49,12 +40,16 @@ namespace GitClient.Views
 					inUseAdapter.LoadIssues().ContinueWith(t2 =>
 					{
 						MainContext.Status = t2.IsCompleted
-							? $"Repositories and issues loaded successfully"
-							: $"Error to load issues";
+						? "Repositories and issues loaded successfully"
+						: "Error to load issues";
+
+
 					}).ContinueWith(task =>
 					{
 						Task.Factory.StartNew(() =>
 						{
+
+							Context.IsLoading = false;
 							Task.Delay(3000).ContinueWith(t3 =>
 							{
 								MainWindow.SetStatus();
@@ -70,27 +65,25 @@ namespace GitClient.Views
 
 			Inicialize();
 
-			IsLoading = false;
-
-
 
 		}
 
 		private async void Inicialize()
 		{
-			Clear();
+			Context.Users.Clear();
+			Context.Repositories.Clear();
 
 			var users = await App.AppManager.Composite.GetUsers();
 			foreach (var user in users)
 			{
-				Users.Add(user);
+				Context.Users.Add(user);
 			}
 
 			var repos = App.AppManager.Composite.InUse.GetRepositories();
 
 			foreach (var repository in repos)
 			{
-				Repositories.Add(repository);
+				Context.Repositories.Add(repository);
 			}
 
 			AccountsComboBox.SelectedIndex = App.AppManager.Logins.IndexOf(App.AppManager.Composite.InUse.GetLoginInfo());
@@ -99,13 +92,18 @@ namespace GitClient.Views
 		private void OnSelectionAccountsComboBoxChanged(object sender, SelectionChangedEventArgs e)
 		{
 
-			if (IsLoading)
+			if (Context.IsLoading)
 				return;
 
 			if (e.AddedItems.Count <= 0)
 				return;
 
 			var user = (User)e.AddedItems[0];
+
+			if (_lastSelected?.Provider == user?.Provider && _lastSelected?.Username == user?.Username)
+				return;
+
+			_lastSelected = user;
 
 			var login = App.AppManager.Logins.FirstOrDefault(l => l.Username == user.Username && l.Provider == user.Provider);
 
@@ -114,23 +112,11 @@ namespace GitClient.Views
 			Load();
 		}
 
-		private void OnRepositoriesListViewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+		private void Clear()
 		{
-			Issues.Clear();
-			var item = (Repository)((ListBox)sender).SelectedItem;
-
-			foreach (var issue in item.Issues)
-			{
-				Issues.Add(issue);
-			}
-
-		}
-
-		public void Clear()
-		{
-			Users.Clear();
-			Repositories.Clear();
-			Issues.Clear();
+			Context.Users.Clear();
+			Context.Repositories.Clear();
 		}
 	}
 }
