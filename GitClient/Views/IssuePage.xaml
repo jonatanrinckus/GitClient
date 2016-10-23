@@ -25,17 +25,22 @@
 				   ScrollViewer.CanContentScroll="True" 
 				   MinHeight="2" 
 				   HorizontalAlignment="Left">
+			<Image DockPanel.Dock="Top" 
+				   Margin="40,30,40,0" 
+				   Source="{Binding LastUserSelected.AvatarUrl}"
+				   VerticalAlignment="Top" 
+				   Height="66"/>
 			<ComboBox x:Name="AccountsComboBox" 
 					  Height="51" 
 					  VerticalAlignment="Top" 
-					  Margin="30,50,30,0" 
+					  Margin="30,30,30,0" 
 					  ItemsSource="{Binding Users}"
 					  IsSynchronizedWithCurrentItem="True"
 					  IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
 					  SelectionChanged="OnSelectionAccountsComboBoxChanged"
 					  HorizontalContentAlignment="Center" 
 					  VerticalContentAlignment="Center" 
-					  DockPanel.Dock="Top">
+					  DockPanel.Dock="Top" Width="140">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel HorizontalAlignment="Center" 

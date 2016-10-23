@@ -63,6 +63,7 @@ namespace GitClient.Adapters
 				return new Models.User()
 				{
 					Username = User.Login,
+					AvatarUrl = User.AvatarUrl,
 					Email = User.Email,
 					Name = User.Name
 				};

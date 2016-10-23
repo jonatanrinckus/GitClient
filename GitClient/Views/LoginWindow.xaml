@@ -7,7 +7,7 @@
 		xmlns:local="clr-namespace:GitClient.Views"
 		xmlns:models="clr-namespace:GitClient.Models"
 		mc:Ignorable="d"
-		Title="LoginWindow" Height="350" Width="500" WindowStartupLocation="CenterScreen" Background="#FFB2B2B2" ResizeMode="NoResize" WindowStyle="None">
+		Title="LoginWindow" Height="350" Width="500" WindowStartupLocation="CenterScreen" Background="#FFB2B2B2" ResizeMode="NoResize" WindowStyle="None" Icon="/GitClient;component/Resources/Icon.png">
 	<Window.DataContext>
 		<models:Login/>
 	</Window.DataContext>

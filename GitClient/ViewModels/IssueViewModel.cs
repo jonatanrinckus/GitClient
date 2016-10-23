@@ -35,5 +35,16 @@ namespace GitClient.ViewModels
 			get { return _repositories; }
 			set { SetProperty(ref _repositories, value); }
 		}
+
+
+		private User _lastUserSelected;
+
+		public User LastUserSelected
+		{
+			get { return _lastUserSelected; }
+			set { SetProperty(ref _lastUserSelected, value); }
+		}
+
+
 	}
 }

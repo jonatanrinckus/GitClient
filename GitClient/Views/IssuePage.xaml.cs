@@ -13,7 +13,6 @@ namespace GitClient.Views
 	{
 		private MainViewModel MainContext { get; }
 		private IssueViewModel Context { get; }
-		private User _lastSelected;
 
 
 		public IssuePage(MainViewModel mainMainContext)
@@ -87,6 +86,9 @@ namespace GitClient.Views
 			}
 
 			AccountsComboBox.SelectedIndex = App.AppManager.Logins.IndexOf(App.AppManager.Composite.InUse.GetLoginInfo());
+
+			Context.LastUserSelected = (User)AccountsComboBox.SelectedItem;
+
 		}
 
 		private void OnSelectionAccountsComboBoxChanged(object sender, SelectionChangedEventArgs e)
@@ -100,12 +102,13 @@ namespace GitClient.Views
 
 			var user = (User)e.AddedItems[0];
 
-			if (_lastSelected?.Provider == user?.Provider && _lastSelected?.Username == user?.Username)
+			if (Context.LastUserSelected?.Provider == user?.Provider &&
+				Context.LastUserSelected?.Username == user?.Username)
 				return;
 
-			_lastSelected = user;
 
-			var login = App.AppManager.Logins.FirstOrDefault(l => l.Username == user.Username && l.Provider == user.Provider);
+
+			var login = App.AppManager.Logins.FirstOrDefault(l => l.Username == user?.Username && l.Provider == user?.Provider);
 
 			App.AppManager.Composite.InUse = App.AppManager.Composite.GetAdapter(login);
 
