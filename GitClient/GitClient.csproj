@@ -83,10 +83,13 @@
     <Compile Include="Adapters\IGitAdapter.cs" />
     <Compile Include="AppManager.cs" />
     <Compile Include="Composites\GitComposite.cs" />
+    <Compile Include="Converters\GetDaysConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Factories\LoginFactory.cs" />
     <Compile Include="Helpers\PasswordEncoder.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Issue.cs" />
+    <Compile Include="Models\ItemState.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Provider.cs" />
     <Compile Include="Models\Repository.cs" />

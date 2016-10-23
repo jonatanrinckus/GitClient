@@ -5,16 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModels="clr-namespace:GitClient.ViewModels"
       xmlns:converters="clr-namespace:GitClient.Converters"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
       x:Name="Page"
       x:Class="GitClient.Views.IssuePage"
       mc:Ignorable="d" 
       d:DesignHeight="766" d:DesignWidth="1310"
       Title="IssuePage" Width="Auto" Height="Auto" Background="White">
-	<Page.Resources>
-		<ResourceDictionary>
-			<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-		</ResourceDictionary>
-	</Page.Resources>
+
 	<Page.DataContext>
 		<viewModels:IssueViewModel/>
 	</Page.DataContext>
@@ -27,7 +24,7 @@
 				   HorizontalAlignment="Left">
 			<Image DockPanel.Dock="Top" 
 				   Margin="40,30,40,0" 
-				   Source="{Binding LastUserSelected.AvatarUrl}"
+				   Source="{Binding UserSelected.AvatarUrl}"
 				   VerticalAlignment="Top" 
 				   Height="66"/>
 			<ComboBox x:Name="AccountsComboBox" 
@@ -64,25 +61,44 @@
 					<DataTemplate>
 						<StackPanel>
 							<Label Content="{Binding Name}" FontWeight="Bold" FontSize="14"/>
-							<Label Content="{Binding Language}" FontSize="10"/>
+							<StackPanel Orientation="Horizontal">
+								<Label Content="{Binding Language}" FontSize="10"/>
+								<Label Content="{Binding OpenIssuesCount}"
+									   ContentStringFormat="Issues Count: {0}"
+									   FontSize="10"/>
+							</StackPanel>
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
 		</DockPanel>
-		<Frame Margin="200,0,0,0" Background="#FFF1F1F1">
+		<Frame NavigationUIVisibility="Hidden"
+			   Margin="200,0,0,0" Background="#FFF1F1F1">
 			<Frame.Content>
-				<ListView x:Name="IssuesListView"
-						  ItemsSource="{Binding Source={x:Reference RepositoriesListView}, Path=SelectedItem.Issues}"
-						  Margin="50">
-					<ListView.ItemTemplate>
-						<DataTemplate>
-							<StackPanel>
-								<Label Content="{Binding Title}"/>
-							</StackPanel>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
+				<Frame x:Name="IssueFrame" Padding="50">
+					<Frame.Content>
+						<ListView ItemsSource="{Binding Source={x:Reference RepositoriesListView}, Path=SelectedItem.Issues}"
+						  MouseLeftButtonUp="OnIssuesListViewMouseLeftButtonUp"
+						  IsSynchronizedWithCurrentItem="True"
+						  Margin="0">
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<StackPanel>
+										<Label Content="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+										<StackPanel Orientation="Horizontal">
+											<Label Content="#" />
+											<Label Content="{Binding Number}"/>
+											<Label Content="{Binding State}"/>
+											<Label Content="{Binding CreatedAt, Converter={StaticResource GetDaysConverter}}" 
+										   ContentStringFormat="{}{0} ago by"/>
+											<Label Content="{Binding User.Username}"/>
+										</StackPanel>
+									</StackPanel>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</Frame.Content>
+				</Frame>
 			</Frame.Content>
 		</Frame>
 	</Grid>

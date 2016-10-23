@@ -3,6 +3,7 @@ using GitClient.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GitClient.Views
 {
@@ -87,7 +88,7 @@ namespace GitClient.Views
 
 			AccountsComboBox.SelectedIndex = App.AppManager.Logins.IndexOf(App.AppManager.Composite.InUse.GetLoginInfo());
 
-			Context.LastUserSelected = (User)AccountsComboBox.SelectedItem;
+			Context.UserSelected = (User)AccountsComboBox.SelectedItem;
 
 		}
 
@@ -102,8 +103,8 @@ namespace GitClient.Views
 
 			var user = (User)e.AddedItems[0];
 
-			if (Context.LastUserSelected?.Provider == user?.Provider &&
-				Context.LastUserSelected?.Username == user?.Username)
+			if (Context.UserSelected?.Provider == user?.Provider &&
+				Context.UserSelected?.Username == user?.Username)
 				return;
 
 
@@ -120,6 +121,13 @@ namespace GitClient.Views
 		{
 			Context.Users.Clear();
 			Context.Repositories.Clear();
+		}
+
+		private void OnIssuesListViewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			var item = (Issue)((ListView)sender).SelectedItem;
+
+			IssueFrame.Navigate(new IssueDetailPage(item));
 		}
 	}
 }

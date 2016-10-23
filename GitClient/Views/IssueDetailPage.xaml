@@ -3,22 +3,36 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:GitClient.Views"
       mc:Ignorable="d" 
+	  x:Name="Page"
+	  DataContext="{Binding ElementName=Page, Path=Issue}"
       d:DesignHeight="396.527" d:DesignWidth="480.753"
       Title="IssueDetailPage" Background="White">
-    <Grid>
-        <Label x:Name="label" Content="Titulo" VerticalAlignment="Top" Margin="50,30,50,0" Focusable="True" FontSize="26.667" Background="#FFEC1717"/>
-        <Label x:Name="label1" Content="Label" VerticalAlignment="Top" Margin="50,75,0,0" HorizontalAlignment="Left" FontSize="13.333" Background="#FF80E606"/>
-        <Label x:Name="label2" Content="Label" Margin="96,75,50,0" VerticalAlignment="Top" Background="#FFA70CFF" FontSize="13.333"/>
-        <ListView x:Name="listView" Margin="50,127,50,52">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button x:Name="button" Content="Comment" HorizontalAlignment="Right" Margin="0,0,50,25" VerticalAlignment="Bottom" Width="75" Background="#FF81EA77"/>
-        <Button x:Name="button1" Content="Close Issue" HorizontalAlignment="Right" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="75"/>
-    </Grid>
+	<Grid>
+		<Button Content="Comment" HorizontalAlignment="Right" Margin="0,0,50,25" VerticalAlignment="Bottom" Width="75" Background="#FF81EA77"/>
+		<Button Content="Close Issue" HorizontalAlignment="Right" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="75"/>
+		<StackPanel Margin="50,30,50,0" VerticalAlignment="Top">
+			<Label Content="{Binding Title}" VerticalAlignment="Top" Margin="0" Focusable="True" FontSize="26.667" />
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+				<Label Content="{Binding State}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="13.333" />
+				<Label Content="{Binding User.Username}" VerticalAlignment="Top" FontSize="13.333"/>
+				<Label Content="{Binding CreatedAt, Converter={StaticResource GetDaysConverter}}" 
+				   ContentStringFormat="opened this issue {0} days ago"
+				   VerticalAlignment="Top" 
+				   FontSize="13.333"/>
+			</StackPanel>
+		</StackPanel>
+		<ScrollViewer Margin="50,100,50,80" HorizontalContentAlignment="Center">
+			<StackPanel>
+				<Label Content="{Binding Body}" Margin="0"/>
+				<ListView x:Name="listView" Margin="0">
+					<ListView.View>
+						<GridView>
+							<GridViewColumn/>
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
 </Page>

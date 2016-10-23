@@ -14,5 +14,6 @@ namespace GitClient.Models
 		public bool HasIssues { get; set; }
 		public List<Issue> Issues { get; set; }
 		public string Language { get; set; }
+		public int OpenIssuesCount { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Repository = GitClient.Models.Repository;
 using User = Octokit.User;
@@ -13,9 +14,9 @@ namespace GitClient.Adapters
 		private GitHubClient Client { get; }
 
 		private User User { get; set; }
-		public Login LoginInfo { get; }
+		private Login LoginInfo { get; }
 
-		public List<Models.Repository> Repositories { get; set; }
+		private List<Models.Repository> Repositories { get; }
 		public GitHubAdapter(Login login, GitHubClient client = null)
 		{
 			if (client == null)
@@ -83,15 +84,38 @@ namespace GitClient.Adapters
 
 				foreach (var issue in issues)
 				{
-					repository.Issues.Add(new Models.Issue()
+					var newIssue = new Models.Issue()
 					{
-						Title = issue.Title,
+						Id = issue.Id,
 						Body = issue.Body,
+						CreatedAt = issue.CreatedAt,
+						Number = issue.Number,
+						State = (Models.ItemState)issue.State,
 						User = new Models.User()
 						{
-							Username = issue.User.Login
-						}
-					});
+							Username = issue.User.Login,
+							AvatarUrl = issue.User.AvatarUrl
+						},
+						Title = issue.Title,
+						UpdatedAt = issue.UpdatedAt
+					};
+					if (issue.Comments > 0)
+					{
+						var comments = await Client.Issue.Comment.GetAllForIssue(repository.Id, issue.Number);
+						var list = comments.Select(comment => new Comment()
+						{
+							Id = comment.Id,
+							Body = comment.Body,
+							CreatedAt = comment.CreatedAt,
+							User = new Models.User()
+							{
+								Username = comment.User.Login,
+								AvatarUrl = comment.User.AvatarUrl
+							}
+						}).ToList();
+						newIssue.Comments = list;
+					}
+					repository.Issues.Add(newIssue);
 				}
 			}
 		}
@@ -116,7 +140,8 @@ namespace GitClient.Adapters
 					FullName = repository.FullName,
 					Name = repository.Name,
 					HasIssues = repository.HasIssues,
-					Language = repository.Language
+					Language = repository.Language,
+					OpenIssuesCount = repository.OpenIssuesCount
 				});
 			}
 		}

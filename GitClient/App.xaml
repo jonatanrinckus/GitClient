@@ -3,9 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GitClient"
              xmlns:properties="clr-namespace:GitClient.Properties"
-			 Exit="OnExit"
+             xmlns:converters="clr-namespace:GitClient.Converters"
+             Exit="OnExit"
              StartupUri="MainWindow.xaml">
 	<Application.Resources>
+		
 		<properties:Settings x:Key="Settings" />
+
+		<converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+		<converters:GetDaysConverter x:Key="GetDaysConverter"/>
+		<ResourceDictionary x:Key="ResourceDictionary">
+			<Style TargetType="Frame">
+				<Setter Property="NavigationUIVisibility" Value="Hidden"/>
+			</Style>
+		</ResourceDictionary>
 	</Application.Resources>
 </Application>

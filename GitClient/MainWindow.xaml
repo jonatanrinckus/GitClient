@@ -55,7 +55,8 @@
 
             <MenuItem Header="_Account"/>
         </Menu>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden">
+        <Frame x:Name="MainFrame" 
+			   NavigationUIVisibility="Hidden">
             <Frame.Background>
                 <ImageBrush/>
             </Frame.Background>
