@@ -24,7 +24,9 @@
 		</StackPanel>
 		<ScrollViewer Margin="50,110,50,80" HorizontalContentAlignment="Center" BorderThickness="22,1,30,1" Background="White">
 			<StackPanel Margin="10">
+				<Label Content="Description:" FontWeight="Bold"/>
 				<Label Content="{Binding Body}" Margin="0"/>
+				<Label Content="Comments:" FontWeight="Bold"/>
 				<ListView Margin="0,15,0,0" ItemsSource="{Binding Comments}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
