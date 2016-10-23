@@ -8,7 +8,7 @@
 	  DataContext="{Binding ElementName=Page, Path=Issue}"
       d:DesignHeight="396.527" d:DesignWidth="480.753"
       Title="IssueDetailPage" Background="White">
-	<Grid>
+	<Grid Background="#FFF7F7F7">
 		<Button Content="Comment" HorizontalAlignment="Right" Margin="0,0,50,25" VerticalAlignment="Bottom" Width="75" Background="#FF81EA77"/>
 		<Button Content="Close Issue" HorizontalAlignment="Right" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="75"/>
 		<StackPanel Margin="50,30,50,0" VerticalAlignment="Top">
@@ -22,15 +22,22 @@
 				   FontSize="13.333"/>
 			</StackPanel>
 		</StackPanel>
-		<ScrollViewer Margin="50,100,50,80" HorizontalContentAlignment="Center">
-			<StackPanel>
+		<ScrollViewer Margin="50,110,50,80" HorizontalContentAlignment="Center" BorderThickness="22,1,30,1" Background="White">
+			<StackPanel Margin="10">
 				<Label Content="{Binding Body}" Margin="0"/>
-				<ListView x:Name="listView" Margin="0">
-					<ListView.View>
-						<GridView>
-							<GridViewColumn/>
-						</GridView>
-					</ListView.View>
+				<ListView Margin="0,15,0,0" ItemsSource="{Binding Comments}">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<StackPanel Orientation="Horizontal">
+									<Label Content="{Binding User.Username}"/>
+									<Label Content="{Binding CreatedAt, Converter={StaticResource GetDaysConverter}}" 
+										   ContentStringFormat="commented {0} days ago"/>
+								</StackPanel>
+								<Label Content="{Binding Body}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.ItemTemplate>
 				</ListView>
 			</StackPanel>
 		</ScrollViewer>
