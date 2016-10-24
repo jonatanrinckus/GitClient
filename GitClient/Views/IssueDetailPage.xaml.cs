@@ -1,4 +1,5 @@
 ﻿using GitClient.Models;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,19 +11,21 @@ namespace GitClient.Views
 	public partial class IssueDetailPage : Page
 	{
 		public Issue Issue { get; }
-
+		public ObservableCollection<Comment> Comments { get; }
 		public IssueDetailPage(Issue issue)
 		{
 			Issue = issue;
+			Comments = new ObservableCollection<Comment>(issue.Comments);
 			InitializeComponent();
 		}
 
 		private void OnCommentButtonClick(object sender, RoutedEventArgs e)
 		{
 
-			var commentWindow = new CommentWindow(Issue);
+			var commentWindow = new CommentWindow(Issue, Comments);
 
 			commentWindow.ShowDialog();
+
 		}
 	}
 }

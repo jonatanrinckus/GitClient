@@ -1,9 +1,14 @@
 ﻿using GitClient.Models;
+using Newtonsoft.Json;
 using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using ProductHeaderValue = Octokit.ProductHeaderValue;
 using Repository = GitClient.Models.Repository;
 using User = Octokit.User;
 
@@ -17,6 +22,7 @@ namespace GitClient.Adapters
 		private Login LoginInfo { get; }
 
 		private List<Models.Repository> Repositories { get; }
+
 		public GitHubAdapter(Login login, GitHubClient client = null)
 		{
 			if (client == null)
@@ -91,13 +97,23 @@ namespace GitClient.Adapters
 						CreatedAt = issue.CreatedAt,
 						Number = issue.Number,
 						State = (Models.ItemState)issue.State,
+						Repository = new Models.Repository()
+						{
+							Id = repository.Id,
+							FullName = repository.FullName,
+							Name = repository.Name,
+							HasIssues = repository.HasIssues,
+							Language = repository.Language,
+							OpenIssuesCount = repository.OpenIssuesCount
+						},
 						User = new Models.User()
 						{
 							Username = issue.User.Login,
 							AvatarUrl = issue.User.AvatarUrl
 						},
 						Title = issue.Title,
-						UpdatedAt = issue.UpdatedAt
+						UpdatedAt = issue.UpdatedAt,
+						CommentsUrl = issue.CommentsUrl
 					};
 					if (issue.Comments > 0)
 					{
@@ -105,7 +121,7 @@ namespace GitClient.Adapters
 						var list = comments.Select(comment => new Comment()
 						{
 							Id = comment.Id,
-							Body = comment.Body,
+							Body = comment.Body.Replace("strong", "Bold"),
 							CreatedAt = comment.CreatedAt,
 							User = new Models.User()
 							{
@@ -144,6 +160,40 @@ namespace GitClient.Adapters
 					OpenIssuesCount = repository.OpenIssuesCount
 				});
 			}
+		}
+
+		private HttpClient CreateHttpClient()
+		{
+			var client = new HttpClient();
+			var byteArray = Encoding.ASCII.GetBytes($"{LoginInfo.Username}:{LoginInfo.Password}");
+			client.DefaultRequestHeaders.Authorization =
+				new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+			client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "GitClient");
+
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			return client;
+		}
+
+		public async Task<bool> AddComment(Models.Issue issue, Comment comment)
+		{
+			try
+			{
+				using (var client = CreateHttpClient())
+				{
+					var json = JsonConvert.SerializeObject(new {body = comment.Body});
+					var response = await client
+						.PostAsync(issue.CommentsUrl,
+							new StringContent(json, Encoding.UTF8, "application/json"));
+
+					return response.IsSuccessStatusCode;
+				}
+
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
 		}
 	}
 }

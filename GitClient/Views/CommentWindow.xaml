@@ -7,8 +7,17 @@
         mc:Ignorable="d"
         Title="CommentWindow" Height="400" Width="600" WindowStyle="None">
     <Grid>
-        <TextBox x:Name="textBox" Margin="50,50,50,100" TextWrapping="Wrap"/>
-        <Button x:Name="button" Content="Post" HorizontalAlignment="Right" Margin="0,0,75,36" VerticalAlignment="Bottom" Width="60" Height="30" Background="#FF64BF5B" Foreground="White" IsDefault="True"/>
-        <Button x:Name="button1" Content="Discart" HorizontalAlignment="Right" Margin="0,0,150,36" VerticalAlignment="Bottom" Width="60" Height="30" Background="#FFE82727" Foreground="White" IsCancel="True"/>
+        <TextBox x:Name="CommentTextBox" Margin="50,50,50,100" TextWrapping="Wrap"/>
+        <Button Content="Post" 
+				HorizontalAlignment="Right" 
+				Margin="0,0,75,36" 
+				VerticalAlignment="Bottom" 
+				Width="60" 
+				Height="30" 
+				Click="OnPostButtonClick"
+				Background="#FF64BF5B" 
+				Foreground="White" 
+				IsDefault="True"/>
+        <Button Content="Discart" HorizontalAlignment="Right" Margin="0,0,150,36" VerticalAlignment="Bottom" Width="60" Height="30" Background="#FFE82727" Foreground="White" IsCancel="True"/>
     </Grid>
 </Window>

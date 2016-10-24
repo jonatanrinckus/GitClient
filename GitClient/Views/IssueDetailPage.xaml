@@ -33,7 +33,10 @@
 				<Label Content="Description:" FontWeight="Bold"/>
 				<Label Content="{Binding Body}" Margin="0"/>
 				<Label Content="Comments:" FontWeight="Bold"/>
-				<ListView x:Name="CommentsListView" Margin="0,15,0,0" ItemsSource="{Binding Comments}">
+				<ListView x:Name="CommentsListView" 
+						  Margin="0,15,0,0" 
+						  IsSynchronizedWithCurrentItem="True"
+						  ItemsSource="{Binding ElementName=Page, Path=Comments}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>

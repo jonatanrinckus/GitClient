@@ -122,6 +122,9 @@ namespace GitClient.Composites
 			}
 		}
 
-
+		public async Task<bool> AddComment(Issue issue, Comment comment)
+		{
+			return await InUse.AddComment(issue, comment);
+		}
 	}
 }

@@ -14,5 +14,7 @@ namespace GitClient.Models
 		public DateTimeOffset? UpdatedAt { get; set; }
 		public DateTimeOffset CreatedAt { get; set; }
 		public int Id { get; set; }
+		public Repository Repository { get; set; }
+		public Uri CommentsUrl { get; set; }
 	}
 }

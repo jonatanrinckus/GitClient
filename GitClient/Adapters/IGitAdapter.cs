@@ -12,5 +12,6 @@ namespace GitClient.Adapters
 		Task LoadIssues();
 		IEnumerable<Repository> GetRepositories();
 		Task LoadRepositories();
+		Task<bool> AddComment(Issue issue, Comment comment);
 	}
 }
