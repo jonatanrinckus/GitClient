@@ -9,7 +9,13 @@
       d:DesignHeight="396.527" d:DesignWidth="480.753"
       Title="IssueDetailPage" Background="White">
 	<Grid Background="#FFF7F7F7">
-		<Button Content="Comment" HorizontalAlignment="Right" Margin="0,0,50,25" VerticalAlignment="Bottom" Width="75" Background="#FF81EA77"/>
+		<Button Content="Comment" 
+				HorizontalAlignment="Right" 
+				VerticalAlignment="Bottom"
+				Margin="0,0,50,25"
+				Width="75" 
+				Click="OnCommentButtonClick"
+				Background="#FF81EA77"/>
 		<Button Content="Close Issue" HorizontalAlignment="Right" Margin="0,0,130,25" VerticalAlignment="Bottom" Width="75"/>
 		<StackPanel Margin="50,30,50,0" VerticalAlignment="Top">
 			<Label Content="{Binding Title}" VerticalAlignment="Top" Margin="0" Focusable="True" FontSize="26.667" />
@@ -27,7 +33,7 @@
 				<Label Content="Description:" FontWeight="Bold"/>
 				<Label Content="{Binding Body}" Margin="0"/>
 				<Label Content="Comments:" FontWeight="Bold"/>
-				<ListView Margin="0,15,0,0" ItemsSource="{Binding Comments}">
+				<ListView x:Name="CommentsListView" Margin="0,15,0,0" ItemsSource="{Binding Comments}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>

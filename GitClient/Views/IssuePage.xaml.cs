@@ -107,13 +107,14 @@ namespace GitClient.Views
 				Context.UserSelected?.Username == user?.Username)
 				return;
 
-
-
 			var login = App.AppManager.Logins.FirstOrDefault(l => l.Username == user?.Username && l.Provider == user?.Provider);
 
 			App.AppManager.Composite.InUse = App.AppManager.Composite.GetAdapter(login);
 
 			Load();
+
+			if (IssueFrame.NavigationService.CanGoBack)
+				IssueFrame.NavigationService.GoBack();
 		}
 
 
@@ -123,11 +124,19 @@ namespace GitClient.Views
 			Context.Repositories.Clear();
 		}
 
-		private void OnIssuesListViewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			var item = (Issue)((ListView)sender).SelectedItem;
 
-			IssueFrame.Navigate(new IssueDetailPage(item));
+		private void OnRepositoriesListViewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			if (IssueFrame.NavigationService.CanGoBack)
+				IssueFrame.NavigationService.GoBack();
+		}
+
+
+		private void OnIssueMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			var item = (Issue)IssuesListView.SelectedItem;
+
+			IssueFrame.NavigationService.Navigate(new IssueDetailPage(item));
 		}
 	}
 }

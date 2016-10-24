@@ -52,6 +52,7 @@
 					 Margin="20,30" 
 					 VerticalContentAlignment="Stretch" 
 					 Padding="0" 
+					 MouseLeftButtonUp="OnRepositoriesListViewMouseLeftButtonUp"
 					 IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
 					 ItemsSource="{Binding Repositories}"
 					 IsSynchronizedWithCurrentItem="True"
@@ -77,13 +78,12 @@
 			<Frame.Content>
 				<Frame x:Name="IssueFrame" Padding="50">
 					<Frame.Content>
-						<ListView ItemsSource="{Binding Source={x:Reference RepositoriesListView}, Path=SelectedItem.Issues}"
-						  MouseLeftButtonUp="OnIssuesListViewMouseLeftButtonUp"
-						  IsSynchronizedWithCurrentItem="True"
-						  Margin="0">
+						<ListView x:Name="IssuesListView" ItemsSource="{Binding Source={x:Reference RepositoriesListView}, Path=SelectedItem.Issues}"
+								 IsSynchronizedWithCurrentItem="True"
+								 Margin="0">
 							<ListView.ItemTemplate>
 								<DataTemplate>
-									<StackPanel>
+									<StackPanel MouseLeftButtonUp="OnIssueMouseLeftButtonUp">
 										<Label Content="{Binding Title}" FontWeight="Bold" FontSize="16"/>
 										<StackPanel Orientation="Horizontal">
 											<Label Content="#" />
