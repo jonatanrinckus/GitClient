@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Issue = GitClient.Models.Issue;
+using ItemState = Octokit.ItemState;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 using Repository = GitClient.Models.Repository;
 using User = Octokit.User;
@@ -22,6 +24,7 @@ namespace GitClient.Adapters
 		private Login LoginInfo { get; }
 
 		private List<Models.Repository> Repositories { get; }
+		private List<Octokit.Repository> OctokitRepositories { get; }
 
 		public GitHubAdapter(Login login, GitHubClient client = null)
 		{
@@ -32,6 +35,7 @@ namespace GitClient.Adapters
 			Client = client;
 			LoginInfo = login;
 			Repositories = new List<Repository>();
+			OctokitRepositories = new List<Octokit.Repository>();
 		}
 
 		public async Task<bool> Login()
@@ -113,7 +117,8 @@ namespace GitClient.Adapters
 						},
 						Title = issue.Title,
 						UpdatedAt = issue.UpdatedAt,
-						CommentsUrl = issue.CommentsUrl
+						CommentsUrl = issue.CommentsUrl,
+						Url = issue.Url
 					};
 					if (issue.Comments > 0)
 					{
@@ -144,12 +149,14 @@ namespace GitClient.Adapters
 		public async Task LoadRepositories()
 		{
 			Repositories.Clear();
+			OctokitRepositories.Clear();
 
 			var result = await Client.Repository.GetAllForCurrent();
 
+
 			foreach (var repository in result)
 			{
-
+				OctokitRepositories.Add(repository);
 				Repositories.Add(new Models.Repository()
 				{
 					Id = repository.Id,
@@ -180,7 +187,7 @@ namespace GitClient.Adapters
 			{
 				using (var client = CreateHttpClient())
 				{
-					var json = JsonConvert.SerializeObject(new {body = comment.Body});
+					var json = JsonConvert.SerializeObject(new { body = comment.Body });
 					var response = await client
 						.PostAsync(issue.CommentsUrl,
 							new StringContent(json, Encoding.UTF8, "application/json"));
@@ -195,5 +202,47 @@ namespace GitClient.Adapters
 			}
 
 		}
+
+		public async Task<bool> CloseIsse(Issue issue)
+		{
+			try
+			{
+				var repo = OctokitRepositories.FirstOrDefault(r => r.Id == issue.Repository.Id);
+				if (repo == null)
+					return false;
+
+				var issueList = await Client.Issue.GetAllForRepository(repo.Id);
+
+				var issueItem = issueList.FirstOrDefault(i => i.Id == issue.Id);
+
+				if (issueItem == null)
+					return false;
+
+				var issueUpdate = issueItem.ToUpdate();
+
+				issueUpdate.State = ItemState.Closed;
+				
+
+				var json = JsonConvert.SerializeObject(issueUpdate);
+
+				var method = new HttpMethod("PATCH");
+
+				var request = new HttpRequestMessage(method, issue.Url)
+				{
+					Content = new StringContent(json, Encoding.UTF8, "application/json")
+				};
+
+				var client = CreateHttpClient();
+
+				var response = await client.SendAsync(request);
+
+				return response.IsSuccessStatusCode;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
+
 	}
 }

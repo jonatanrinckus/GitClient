@@ -126,5 +126,10 @@ namespace GitClient.Composites
 		{
 			return await InUse.AddComment(issue, comment);
 		}
+
+		public Task<bool> CloseIsse(Issue issue)
+		{
+			return InUse.CloseIsse(issue);
+		}
 	}
 }

@@ -27,5 +27,10 @@ namespace GitClient.Views
 			commentWindow.ShowDialog();
 
 		}
+
+		private void OnCloseIssueButtonClick(object sender, RoutedEventArgs e)
+		{
+			App.AppManager.Composite.CloseIsse(Issue);
+		}
 	}
 }

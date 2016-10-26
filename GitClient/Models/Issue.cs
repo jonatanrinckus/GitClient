@@ -16,5 +16,6 @@ namespace GitClient.Models
 		public int Id { get; set; }
 		public Repository Repository { get; set; }
 		public Uri CommentsUrl { get; set; }
+		public Uri Url { get; set; }
 	}
 }
