@@ -13,6 +13,6 @@ namespace GitClient.Adapters
 		IEnumerable<Repository> GetRepositories();
 		Task LoadRepositories();
 		Task<bool> AddComment(Issue issue, Comment comment);
-		Task<bool> CloseIsse(Issue issue);
+		Task<bool> ChangeIssueState(Issue issue, string state);
 	}
 }

@@ -24,7 +24,7 @@ namespace GitClient.Views
 			Load();
 		}
 
-		private async void Load()
+		public async void Load()
 		{
 			if (Context.IsLoading)
 				return;
@@ -136,7 +136,8 @@ namespace GitClient.Views
 		{
 			var item = (Issue)IssuesListView.SelectedItem;
 
-			IssueFrame.NavigationService.Navigate(new IssueDetailPage(item));
+			IssueFrame.NavigationService.Navigate(new IssueDetailPage(item, this));
+
 		}
 	}
 }

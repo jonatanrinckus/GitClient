@@ -17,7 +17,8 @@
 				Click="OnCommentButtonClick"
 				Background="#FF81EA77"/>
 		<Button Content="Close Issue"
-				Click="OnCloseIssueButtonClick"
+				x:Name="OpenCloseIssueButton"
+				Click="OnOpenCloseIssueButtonClick"
 				HorizontalAlignment="Right" 
 				Margin="0,0,130,25" 
 				VerticalAlignment="Bottom" 

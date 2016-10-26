@@ -9,7 +9,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Issue = GitClient.Models.Issue;
-using ItemState = Octokit.ItemState;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 using Repository = GitClient.Models.Repository;
 using User = Octokit.User;
@@ -90,10 +89,17 @@ namespace GitClient.Adapters
 		{
 			foreach (var repository in Repositories)
 			{
-				var issues = await Client.Issue.GetAllForRepository(repository.Id);
+				var issues = await Client.Issue.GetAllForRepository(repository.Id,
+					new RepositoryIssueRequest()
+					{
+						State = ItemStateFilter.All
+					});
 
 				foreach (var issue in issues)
 				{
+					if (issue.PullRequest != null)
+						continue;
+
 					var newIssue = new Models.Issue()
 					{
 						Id = issue.Id,
@@ -203,7 +209,7 @@ namespace GitClient.Adapters
 
 		}
 
-		public async Task<bool> CloseIsse(Issue issue)
+		public async Task<bool> ChangeIssueState(Issue issue, string state)
 		{
 			try
 			{
@@ -211,19 +217,8 @@ namespace GitClient.Adapters
 				if (repo == null)
 					return false;
 
-				var issueList = await Client.Issue.GetAllForRepository(repo.Id);
 
-				var issueItem = issueList.FirstOrDefault(i => i.Id == issue.Id);
-
-				if (issueItem == null)
-					return false;
-
-				var issueUpdate = issueItem.ToUpdate();
-
-				issueUpdate.State = ItemState.Closed;
-				
-
-				var json = JsonConvert.SerializeObject(issueUpdate);
+				var json = JsonConvert.SerializeObject(new { state });
 
 				var method = new HttpMethod("PATCH");
 

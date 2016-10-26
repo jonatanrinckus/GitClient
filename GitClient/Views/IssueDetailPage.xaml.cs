@@ -11,12 +11,15 @@ namespace GitClient.Views
 	public partial class IssueDetailPage : Page
 	{
 		public Issue Issue { get; }
+		public IssuePage IssuePage { get; set; }
 		public ObservableCollection<Comment> Comments { get; }
-		public IssueDetailPage(Issue issue)
+		public IssueDetailPage(Issue issue, IssuePage issuePage)
 		{
 			Issue = issue;
+			IssuePage = issuePage;
 			Comments = new ObservableCollection<Comment>(issue.Comments);
 			InitializeComponent();
+			OpenCloseIssueButton.Content = Issue.State == ItemState.Open ? "Close Issue" : "Reopen Issue";
 		}
 
 		private void OnCommentButtonClick(object sender, RoutedEventArgs e)
@@ -28,9 +31,18 @@ namespace GitClient.Views
 
 		}
 
-		private void OnCloseIssueButtonClick(object sender, RoutedEventArgs e)
+		private async void OnOpenCloseIssueButtonClick(object sender, RoutedEventArgs e)
 		{
-			App.AppManager.Composite.CloseIsse(Issue);
+
+			OpenCloseIssueButton.Content = Issue.State == ItemState.Open ? "Reopen Issue" : "Close Issue";
+
+			var state = Issue.State == ItemState.Open ? "closed" : "open";
+
+			if (await App.AppManager.Composite.ChangeIssueState(Issue, state))
+			{
+				Issue.State = Issue.State == ItemState.Open ? ItemState.Closed : ItemState.Open;
+				IssuePage.Load();
+			}
 		}
 	}
 }
