@@ -32,36 +32,41 @@ namespace GitClient.Views
 
 			Context.IsLoading = true;
 			var inUseAdapter = App.AppManager.Composite.InUse;
-			MainContext.Status = $"Loading repositorios...";
+			MainContext.Status = "Loading repositorios...";
 			await inUseAdapter.LoadRepositories().ContinueWith(t =>
 			{
-				if (t.IsCompleted)
+				var t4 = new Thread(() =>
 				{
-					MainContext.Status = $"Loading issues...";
-					inUseAdapter.LoadIssues().ContinueWith(t2 =>
+					if (t.IsCompleted)
 					{
-						MainContext.Status = t2.IsCompleted
-						? "Repositories and issues loaded successfully"
-						: "Error to load issues";
 
-
-					}).ContinueWith(task =>
-					{
-						Task.Factory.StartNew(() =>
+						MainContext.Status = "Loading issues...";
+						inUseAdapter.LoadIssues().ContinueWith(t2 =>
 						{
+							MainContext.Status = t2.IsCompleted
+							? "Repositories and issues loaded successfully"
+							: "Error to load issues";
 
-							Context.IsLoading = false;
-							Task.Delay(3000).ContinueWith(t3 =>
+
+						}).ContinueWith(task =>
+						{
+							Task.Factory.StartNew(() =>
 							{
-								var t4 = new Thread(MainWindow.SetStatus);
 
-								t4.Start();
+								Context.IsLoading = false;
+								Task.Delay(3000).ContinueWith(t3 =>
+								{
+									MainWindow.SetStatus();
+								});
 							});
 						});
-					});
-				}
-				else
-					MainContext.Status = $"Error to load repositories";
+					}
+					else
+						MainContext.Status = "Error to load repositories";
+				});
+
+				t4.Start();
+				
 
 			});
 
