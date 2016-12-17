@@ -1,6 +1,7 @@
 ﻿using GitClient.ViewModels;
 using GitClient.Views;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using GitClient.ServiceReference1;
@@ -21,12 +22,16 @@ namespace GitClient
 			Context.Status = "Starting...";
 
 			//  DispatcherTimer setup
+
+
 			var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 			dispatcherTimer.Tick += dispatcherTimer_Tick;
 			dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 			dispatcherTimer.Start();
-
-			SetStatus();
+			
+			var t = new Thread(SetStatus);
+			
+			t.Start();
 
 
 		}

@@ -1,6 +1,7 @@
 ﻿using GitClient.Models;
 using GitClient.ViewModels;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -52,7 +53,9 @@ namespace GitClient.Views
 							Context.IsLoading = false;
 							Task.Delay(3000).ContinueWith(t3 =>
 							{
-								MainWindow.SetStatus();
+								var t4 = new Thread(MainWindow.SetStatus);
+
+								t4.Start();
 							});
 						});
 					});
