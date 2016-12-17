@@ -3,6 +3,7 @@ using GitClient.Views;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using GitClient.ServiceReference1;
 
 namespace GitClient
 {
@@ -41,7 +42,12 @@ namespace GitClient
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
 			// Updating the Label which displays the current second
-			Context.Clock = $"{DateTime.Now.Hour:D2}:{DateTime.Now.Minute:D2}:{DateTime.Now.Second:D2}";
+
+			IService1 service = new Service1Client();
+
+			var date = service.GetDateTimeUtcNow().ToLocalTime();
+			
+			Context.Clock = $"{date.Hour:D2}:{date.Minute:D2}:{date.Second:D2}";
 
 			// Forcing the CommandManager to raise the RequerySuggested event
 			CommandManager.InvalidateRequerySuggested();

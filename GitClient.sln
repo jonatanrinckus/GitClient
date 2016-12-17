@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitClient", "GitClient\GitClient.csproj", "{66882004-4BDF-42B1-955C-060602FF7CB7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{413A48F1-243C-404F-AF26-9F940F04C09A} = {413A48F1-243C-404F-AF26-9F940F04C09A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitClient.WCF", "GitClient.WCF\GitClient.WCF.csproj", "{413A48F1-243C-404F-AF26-9F940F04C09A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{66882004-4BDF-42B1-955C-060602FF7CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66882004-4BDF-42B1-955C-060602FF7CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66882004-4BDF-42B1-955C-060602FF7CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413A48F1-243C-404F-AF26-9F940F04C09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413A48F1-243C-404F-AF26-9F940F04C09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413A48F1-243C-404F-AF26-9F940F04C09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413A48F1-243C-404F-AF26-9F940F04C09A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
